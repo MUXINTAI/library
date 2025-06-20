@@ -142,17 +142,148 @@
 
 ### 环境要求
 - **Java**: JDK 17+
-- **Node.js**: 16+
+- **Node.js**: 16+ (推荐18+)
 - **MySQL**: 8.0+
 - **Maven**: 3.6+
+- **IDE**: IntelliJ IDEA 2023+ (推荐) 或 Eclipse
 
-### 1. 克隆项目
+### 开发环境搭建
+
+#### 方式一：使用IntelliJ IDEA（推荐）
+
+##### 1. 克隆项目
 ```bash
-git clone <项目地址>
+git clone https://github.com/MUXINTAI/library.git
 cd library
 ```
 
-### 2. 数据库初始化
+##### 2. 使用IDEA打开项目
+1. **打开IntelliJ IDEA**
+2. **选择 "Open"**，导航到项目根目录（包含`pom.xml`的目录）
+3. **等待Maven依赖下载**：IDEA会自动识别Maven项目并下载依赖
+4. **配置JDK**：
+   - File → Project Structure → Project Settings → Project
+   - 设置 Project SDK 为 JDK 17+
+   - 设置 Project language level 为 17
+
+##### 3. 数据库配置
+1. **安装MySQL 8.0**并启动服务
+2. **创建数据库**：
+   ```sql
+   CREATE DATABASE library_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+   ```
+3. **导入初始数据**：
+   - 在IDEA中打开 `database_init.sql`
+   - 连接到MySQL数据库（可使用IDEA内置的Database工具）
+   - 执行SQL脚本
+
+##### 4. 配置应用属性
+编辑 `src/main/resources/application.properties`：
+```properties
+# 数据库配置（根据实际情况修改）
+spring.datasource.url=jdbc:mysql://localhost:3306/library_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useAffectedRows=true
+spring.datasource.username=root
+spring.datasource.password=你的MySQL密码
+
+# JWT配置
+jwt.secret=mySecretKey123456789012345678901234567890
+jwt.expiration=86400000
+```
+
+##### 5. 启动后端服务
+- **方式1**：在IDEA中找到 `LibraryApplication.java`，右键选择 "Run 'LibraryApplication'"
+- **方式2**：在IDEA底部Terminal中执行：
+  ```bash
+  ./mvnw spring-boot:run
+  ```
+- **方式3**：使用IDEA的Maven工具窗口：
+  - 打开右侧 Maven 面板
+  - 展开 library → Plugins → spring-boot
+  - 双击 spring-boot:run
+
+后端服务将运行在 `http://localhost:8080`
+
+##### 6. 前端环境搭建
+1. **安装Node.js依赖**：
+   ```bash
+   cd library-ui
+   npm install
+   ```
+
+2. **启动前端开发服务器**：
+   ```bash
+   npm run dev
+   ```
+
+3. **在IDEA中集成前端开发**：
+   - 安装插件：File → Settings → Plugins → 搜索并安装 "Vue.js"
+   - 配置Node.js：File → Settings → Languages & Frameworks → Node.js and NPM
+   - 设置Node interpreter路径
+
+前端服务将运行在 `http://localhost:5173`
+
+##### 7. IDEA开发技巧
+- **代码格式化**：Ctrl+Alt+L (Windows/Linux) 或 Cmd+Option+L (Mac)
+- **自动导入**：Alt+Enter 快速修复和导入
+- **运行配置**：Run → Edit Configurations 可以配置启动参数
+- **数据库工具**：View → Tool Windows → Database 管理数据库连接
+- **Maven工具**：View → Tool Windows → Maven 管理依赖和执行任务
+- **Git集成**：VCS菜单提供完整的Git操作支持
+
+##### 8. IDEA常见问题解决
+
+**问题1：Maven依赖下载失败**
+```bash
+# 解决方案：
+1. File → Settings → Build, Execution, Deployment → Build Tools → Maven
+2. 设置Maven home directory为本地Maven安装路径
+3. 设置User settings file和Local repository
+4. 或使用阿里云镜像，在Maven settings.xml中添加：
+<mirror>
+    <id>aliyunmaven</id>
+    <mirrorOf>*</mirrorOf>
+    <name>阿里云公共仓库</name>
+    <url>https://maven.aliyun.com/repository/public</url>
+</mirror>
+```
+
+**问题2：JDK版本配置错误**
+```bash
+# 解决方案：
+1. File → Project Structure → Project Settings → Project
+2. 确保Project SDK设置为JDK 17+
+3. File → Settings → Build, Execution, Deployment → Compiler → Java Compiler
+4. 确保Project bytecode version设置为17
+```
+
+**问题3：Spring Boot启动失败**
+```bash
+# 检查清单：
+1. 确认MySQL服务已启动
+2. 检查数据库连接配置是否正确
+3. 确认数据库library_db已创建
+4. 检查application.properties中的密码是否正确
+5. 查看IDEA控制台的错误日志
+```
+
+**问题4：前端Vue项目在IDEA中无法识别**
+```bash
+# 解决方案：
+1. 安装Vue.js插件：File → Settings → Plugins → 搜索"Vue.js"
+2. 右键library-ui文件夹 → Mark Directory as → Sources Root
+3. File → Settings → Languages & Frameworks → Node.js and NPM
+4. 设置正确的Node.js路径
+```
+
+#### 方式二：命令行方式
+
+##### 1. 克隆项目
+```bash
+git clone https://github.com/MUXINTAI/library.git
+cd library
+```
+
+##### 2. 数据库初始化
 ```bash
 # 1. 创建数据库
 mysql -u root -p
@@ -162,7 +293,7 @@ CREATE DATABASE library_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 mysql -u root -p library_db < database_init.sql
 ```
 
-### 3. 后端启动
+##### 3. 后端启动
 ```bash
 # 配置数据库连接
 vim src/main/resources/application.properties
@@ -171,19 +302,53 @@ vim src/main/resources/application.properties
 ./mvnw spring-boot:run
 ```
 
-后端服务将运行在 `http://localhost:8080`
-
-### 4. 前端启动
+##### 4. 前端启动
 ```bash
 cd library-ui
 npm install
 npm run dev
 ```
 
-前端服务将运行在 `http://localhost:5173`
+### 🌐 访问系统
+- **前端界面**: http://localhost:5173
+- **后端API**: http://localhost:8080
+- **API测试**: http://localhost:8080/api/test/hello
 
-### 5. 访问系统
-打开浏览器访问 `http://localhost:5173`
+### 💡 IDEA项目结构说明
+
+在IDEA中打开项目后，你会看到以下项目结构：
+
+```
+library/                          # 项目根目录
+├── 📁 .idea/                     # IDEA配置文件（自动生成）
+├── 📁 .mvn/                      # Maven Wrapper配置
+├── 📁 src/main/java/             # Java源代码
+│   └── 📁 com/example/library/
+│       ├── 📄 LibraryApplication.java    # 主启动类 ⭐
+│       ├── 📁 config/            # 配置类
+│       ├── 📁 controller/        # 控制器层
+│       ├── 📁 service/           # 业务逻辑层
+│       ├── 📁 repository/        # 数据访问层
+│       ├── 📁 entity/            # 实体类
+│       ├── 📁 dto/               # 数据传输对象
+│       └── 📁 util/              # 工具类
+├── 📁 src/main/resources/        # 资源文件
+│   └── 📄 application.properties # 配置文件 ⭐
+├── 📁 library-ui/                # 前端项目 ⭐
+│   ├── 📄 package.json           # 前端依赖配置
+│   ├── 📄 vite.config.js         # Vite配置
+│   └── 📁 src/                   # Vue源代码
+├── 📄 pom.xml                    # Maven配置文件 ⭐
+├── 📄 database_init.sql          # 数据库初始化脚本 ⭐
+└── 📄 README.md                  # 项目说明文档
+```
+
+**⭐ 重要文件说明：**
+- `LibraryApplication.java` - Spring Boot主启动类，运行此文件启动后端
+- `application.properties` - 数据库连接等配置信息
+- `pom.xml` - Maven依赖管理，包含所有后端依赖
+- `library-ui/` - Vue 3前端项目，需要单独启动
+- `database_init.sql` - 包含完整的数据库表结构和初始数据
 
 ## 🔑 默认账户
 
