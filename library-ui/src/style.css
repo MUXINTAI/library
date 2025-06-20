@@ -1,0 +1,204 @@
+/* 全局样式重置 */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html, body {
+  height: 100%;
+  font-family: 'Helvetica Neue', Helvetica, 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', '微软雅黑', Arial, sans-serif;
+  background-color: #f5f7fa;
+}
+
+#app {
+  height: 100%;
+  min-height: 100vh;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #c1c1c1;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #a8a8a8;
+}
+
+/* 页面布局样式 */
+.page-container {
+  padding: 24px;
+  min-height: calc(100vh - 60px);
+}
+
+.page-header {
+  background: white;
+  padding: 16px 24px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.page-title {
+  font-size: 24px;
+  font-weight: 600;
+  color: #303133;
+  margin: 0;
+}
+
+.page-subtitle {
+  font-size: 14px;
+  color: #909399;
+  margin-top: 8px;
+}
+
+/* 卡片样式 */
+.card-container {
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+}
+
+.card-header {
+  padding: 20px 24px;
+  border-bottom: 1px solid #ebeef5;
+  background: #fafbfc;
+}
+
+.card-body {
+  padding: 24px;
+}
+
+/* 按钮组样式 */
+.button-group {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.button-group .el-button {
+  border-radius: 6px;
+}
+
+/* 表格样式增强 */
+.el-table {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.el-table .el-table__header-wrapper {
+  background: #f8f9fa;
+}
+
+.el-table th {
+  background: #f8f9fa !important;
+  color: #606266;
+  font-weight: 600;
+}
+
+/* 表单样式 */
+.form-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.el-form-item__label {
+  font-weight: 500;
+  color: #606266;
+}
+
+/* 搜索框样式 */
+.search-container {
+  background: white;
+  padding: 20px 24px;
+  margin-bottom: 24px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.search-form {
+  display: flex;
+  gap: 16px;
+  align-items: end;
+  flex-wrap: wrap;
+}
+
+.search-form .el-form-item {
+  margin-bottom: 0;
+}
+
+/* 状态标签样式 */
+.status-tag {
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+/* 统计卡片样式 */
+.stats-card {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
+}
+
+.stats-card h3 {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.stats-card p {
+  font-size: 16px;
+  opacity: 0.9;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .page-container {
+    padding: 12px;
+  }
+  
+  .search-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  
+  .button-group {
+    flex-wrap: wrap;
+  }
+}
+
+/* 动画效果 */
+.fade-enter-active, .fade-leave-active {
+  transition: opacity 0.3s ease;
+}
+
+.fade-enter-from, .fade-leave-to {
+  opacity: 0;
+}
+
+/* 自定义主题色 */
+:root {
+  --el-color-primary: #409eff;
+  --el-color-primary-light-3: #79bbff;
+  --el-color-primary-light-5: #a0cfff;
+  --el-color-primary-light-7: #c6e2ff;
+  --el-color-primary-light-8: #d9ecff;
+  --el-color-primary-light-9: #ecf5ff;
+  --el-color-primary-dark-2: #337ecc;
+}

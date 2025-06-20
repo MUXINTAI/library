@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>图书管理系统</title>
+    <script>
+      // 调试用：检查认证状态
+      window.addEventListener('load', function() {
+        setTimeout(function() {
+          const token = localStorage.getItem('token');
+          const user = localStorage.getItem('user');
+          console.log('页面加载时的认证状态:', { token: !!token, user: !!user });
+          
+          // 如果没有认证信息且不在登录页面，则跳转到登录页面
+          if (!token && !window.location.pathname.includes('/login')) {
+            console.log('未认证，准备跳转到登录页面');
+            window.location.href = '/login';
+          }
+        }, 100);
+      });
+    </script>
+  </head>
+  <body>
+    <div id="app">
+      <div style="text-align: center; padding: 50px;">
+        <h2>图书管理系统加载中...</h2>
+        <p>如果页面长时间未加载，请尝试：</p>
+        <ul style="text-align: left; display: inline-block;">
+          <li><a href="/login">直接访问登录页面</a></li>
+          <li><a href="/test">访问测试页面</a></li>
+          <li>清除浏览器缓存后刷新</li>
+        </ul>
+      </div>
+    </div>
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html> 
