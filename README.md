@@ -10,6 +10,8 @@
 ![数据库](https://img.shields.io/badge/数据库-MySQL%208.0+-orange)
 ![认证](https://img.shields.io/badge/认证-JWT%200.12.3-red)
 
+**中文版 README** | [English Version](README_EN.md)
+
 ## 🎯 项目概述
 
 本项目是数据库系统原理课程的综合实践项目，通过设计和实现一个完整的图书管理系统，深入探索关系型数据库的核心理论与实践应用。
