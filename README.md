@@ -155,8 +155,8 @@
 
 ##### 1. 克隆项目
 ```bash
-git clone https://github.com/MUXINTAI/library.git
-cd library
+git clone https://github.com/MUXINTAI/library-management-system.git
+cd library-management-system
 ```
 
 ##### 2. 使用IDEA打开项目
@@ -281,8 +281,8 @@ jwt.expiration=86400000
 
 ##### 1. 克隆项目
 ```bash
-git clone https://github.com/MUXINTAI/library.git
-cd library
+git clone https://github.com/MUXINTAI/library-management-system.git
+cd library-management-system
 ```
 
 ##### 2. 数据库初始化

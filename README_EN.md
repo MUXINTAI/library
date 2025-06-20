@@ -106,8 +106,8 @@ This project is a comprehensive practice project for the Database Systems Princi
 
 ### Clone Project
 ```bash
-git clone https://github.com/MUXINTAI/library.git
-cd library
+git clone https://github.com/MUXINTAI/library-management-system.git
+cd library-management-system
 ```
 
 ### Database Setup
