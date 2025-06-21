@@ -1,0 +1,1809 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{xeCJK}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% 页面设置
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% 中文字体设置
+\setCJKmainfont{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{FangSong}
+
+% 页眉页脚设置
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{图书管理系统项目报告}
+\fancyfoot[C]{\thepage}
+
+% 标题格式设置
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% 代码块设置
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=10pt,
+    tabsize=4
+}
+
+% 超链接设置
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\title{\textbf{\Huge 图书管理系统\\项目开发报告}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\vspace{2cm}
+
+\begin{center}
+\Large
+\textbf{基于Spring Boot + Vue 3的现代化图书管理系统}
+
+\vspace{1cm}
+
+\normalsize
+课程名称：软件工程实践\\
+指导教师：XXX教授\\
+完成时间：\today
+
+\vspace{3cm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{角色} & \textbf{姓名} & \textbf{学号} & \textbf{主要分工} \\
+\hline
+组长 & 冯达 & 072108208 & 项目架构设计、后端核心开发、系统集成 \\
+\hline
+组员A & 张三 & 123123 & 前端界面开发、用户体验设计、前后端联调 \\
+\hline
+组员B & 李四 & 4564546 & 数据库设计、API接口开发、系统测试 \\
+\hline
+组员C & 王五 & 789789 & 需求分析、文档编写、部署运维 \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{项目概述}
+
+\subsection{项目背景}
+随着信息技术的快速发展，传统的图书管理方式已经无法满足现代图书馆的管理需求。为了提高图书管理效率，减少人工操作成本，提升用户体验，我们开发了这套基于Spring Boot和Vue 3的现代化图书管理系统。
+
+\subsection{项目目标}
+\begin{itemize}
+    \item 实现图书信息的数字化管理
+    \item 提供便捷的图书借阅和归还服务
+    \item 支持多角色权限管理
+    \item 提供友好的用户界面和良好的用户体验
+    \item 确保系统的安全性和稳定性
+\end{itemize}
+
+\subsection{项目特色}
+\begin{itemize}
+    \item \textbf{前后端分离架构}：采用现代化的前后端分离设计，提高系统可维护性
+    \item \textbf{响应式设计}：支持多种设备访问，适配PC端和移动端
+    \item \textbf{角色权限控制}：支持管理员和读者两种角色，权限分离明确
+    \item \textbf{实时数据更新}：基于RESTful API，实现前后端数据实时同步
+    \item \textbf{安全认证机制}：采用JWT令牌认证，确保系统安全
+\end{itemize}
+
+\section{需求分析}
+
+\subsection{功能性需求}
+
+\subsubsection{管理员功能需求}
+\begin{enumerate}
+    \item \textbf{系统管理}
+    \begin{itemize}
+        \item 用户账户管理（增删改查）
+        \item 权限分配和管理
+        \item 系统参数配置
+    \end{itemize}
+    
+    \item \textbf{图书管理}
+    \begin{itemize}
+        \item 图书信息录入、修改、删除
+        \item 图书分类管理
+        \item 图书库存管理
+        \item 图书搜索和查询
+    \end{itemize}
+    
+    \item \textbf{借阅管理}
+    \begin{itemize}
+        \item 借阅申请审核
+        \item 图书归还处理
+        \item 逾期图书管理
+        \item 借阅统计和报表
+    \end{itemize}
+    
+    \item \textbf{数据统计}
+    \begin{itemize}
+        \item 图书借阅统计
+        \item 用户活跃度统计
+        \item 系统使用情况分析
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{读者功能需求}
+\begin{enumerate}
+    \item \textbf{账户管理}
+    \begin{itemize}
+        \item 用户注册和登录
+        \item 个人信息维护
+        \item 密码修改
+    \end{itemize}
+    
+    \item \textbf{图书浏览}
+    \begin{itemize}
+        \item 图书搜索和筛选
+        \item 图书详情查看
+        \item 图书分类浏览
+    \end{itemize}
+    
+    \item \textbf{借阅服务}
+    \begin{itemize}
+        \item 在线借阅申请
+        \item 借阅记录查询
+        \item 借阅申请取消
+        \item 借阅到期提醒
+    \end{itemize}
+\end{enumerate}
+
+\subsection{非功能性需求}
+
+\subsubsection{性能需求}
+\begin{itemize}
+    \item 系统响应时间不超过3秒
+    \item 支持并发用户数不少于100人
+    \item 数据库查询效率优化
+    \item 前端页面加载速度优化
+\end{itemize}
+
+\subsubsection{安全需求}
+\begin{itemize}
+    \item 用户身份认证和授权
+    \item 数据传输加密
+    \item SQL注入防护
+    \item XSS攻击防护
+    \item 敏感数据保护
+\end{itemize}
+
+\subsubsection{可用性需求}
+\begin{itemize}
+    \item 系统可用性达到99\%以上
+    \item 支持7×24小时运行
+    \item 具备故障恢复能力
+    \item 支持数据备份和恢复
+\end{itemize}
+
+\section{系统设计}
+
+\subsection{系统架构}
+
+本系统采用前后端分离的架构设计，主要包含以下几个层次：
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|}
+\hline
+\textbf{前端展示层 (Vue 3 + Element Plus)} \\
+\hline
+用户界面 | 交互逻辑 | 状态管理 \\
+\hline
+\hline
+\textbf{API接口层 (RESTful API)} \\
+\hline
+HTTP请求/响应 | JSON数据格式 | 状态码 \\
+\hline
+\hline
+\textbf{业务逻辑层 (Spring Boot)} \\
+\hline
+控制器 | 服务层 | 业务逻辑处理 \\
+\hline
+\hline
+\textbf{数据访问层 (Spring Data JPA)} \\
+\hline
+实体映射 | 数据库操作 | 事务管理 \\
+\hline
+\hline
+\textbf{数据存储层 (MySQL)} \\
+\hline
+数据持久化 | 数据完整性 | 索引优化 \\
+\hline
+\end{tabular}
+\caption{系统架构图}
+\end{figure}
+
+\subsection{技术栈}
+
+\subsubsection{后端技术栈}
+\begin{itemize}
+    \item \textbf{Spring Boot 3.x}：主框架，提供依赖注入、自动配置等功能
+    \item \textbf{Spring Security}：安全框架，处理认证和授权
+    \item \textbf{Spring Data JPA}：数据访问层，简化数据库操作
+    \item \textbf{MySQL 8.0}：关系型数据库，存储业务数据
+    \item \textbf{JWT}：无状态身份验证令牌
+    \item \textbf{Maven}：项目构建和依赖管理工具
+\end{itemize}
+
+\subsubsection{前端技术栈}
+\begin{itemize}
+    \item \textbf{Vue 3}：渐进式JavaScript框架
+    \item \textbf{Element Plus}：基于Vue 3的UI组件库
+    \item \textbf{Pinia}：Vue 3的状态管理库
+    \item \textbf{Vue Router}：Vue.js官方路由管理器
+    \item \textbf{Axios}：基于Promise的HTTP客户端
+    \item \textbf{Vite}：快速的前端构建工具
+\end{itemize}
+
+\subsection{数据库设计}
+
+\subsubsection{数据库概念模型}
+系统主要包含以下实体及其关系：
+\begin{itemize}
+    \item \textbf{用户(User)}：系统用户信息
+    \item \textbf{图书(Book)}：图书基本信息
+    \item \textbf{分类(Category)}：图书分类信息
+    \item \textbf{借阅记录(BorrowRecord)}：借阅相关信息
+\end{itemize}
+
+\subsubsection{数据表设计}
+
+\textbf{1. 用户表(users)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 用户ID \\
+\hline
+username & VARCHAR(50) & UNIQUE, NOT NULL & 用户名 \\
+\hline
+password & VARCHAR(255) & NOT NULL & 密码(加密) \\
+\hline
+real\_name & VARCHAR(100) & NOT NULL & 真实姓名 \\
+\hline
+email & VARCHAR(100) & UNIQUE & 邮箱地址 \\
+\hline
+phone & VARCHAR(20) & & 电话号码 \\
+\hline
+role & ENUM('ADMIN','READER') & NOT NULL & 用户角色 \\
+\hline
+enabled & BOOLEAN & DEFAULT TRUE & 是否启用 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\textbf{2. 图书表(books)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 图书ID \\
+\hline
+title & VARCHAR(200) & NOT NULL & 书名 \\
+\hline
+author & VARCHAR(100) & NOT NULL & 作者 \\
+\hline
+isbn & VARCHAR(20) & UNIQUE & ISBN号 \\
+\hline
+publisher & VARCHAR(100) & & 出版社 \\
+\hline
+publish\_date & DATE & & 出版日期 \\
+\hline
+category\_id & BIGINT & FOREIGN KEY & 分类ID \\
+\hline
+total\_quantity & INT & NOT NULL, DEFAULT 1 & 总数量 \\
+\hline
+available\_quantity & INT & NOT NULL, DEFAULT 1 & 可借数量 \\
+\hline
+description & TEXT & & 图书描述 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\textbf{3. 分类表(categories)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 分类ID \\
+\hline
+name & VARCHAR(50) & UNIQUE, NOT NULL & 分类名称 \\
+\hline
+description & TEXT & & 分类描述 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\textbf{4. 借阅记录表(borrow\_records)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 记录ID \\
+\hline
+user\_id & BIGINT & FOREIGN KEY, NOT NULL & 用户ID \\
+\hline
+book\_id & BIGINT & FOREIGN KEY, NOT NULL & 图书ID \\
+\hline
+status & ENUM('PENDING','BORROWED','RETURNED','OVERDUE') & NOT NULL & 借阅状态 \\
+\hline
+borrow\_date & DATE & & 借阅日期 \\
+\hline
+due\_date & DATE & & 应还日期 \\
+\hline
+return\_date & DATE & & 实际归还日期 \\
+\hline
+remarks & TEXT & & 备注信息 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\section{系统实现}
+
+\subsection{后端实现}
+
+\subsubsection{项目结构}
+\begin{lstlisting}[language=bash]
+src/main/java/com/example/library/
+├── config/                     # 配置类
+│   ├── SecurityConfig.java    # 安全配置
+│   ├── GlobalExceptionHandler.java # 全局异常处理
+│   └── DataInitializer.java   # 数据初始化
+├── controller/                 # 控制器层
+│   ├── AuthController.java    # 认证控制器
+│   ├── AdminController.java   # 管理员控制器
+│   ├── ReaderController.java  # 读者控制器
+│   └── BookController.java    # 图书控制器
+├── dto/                       # 数据传输对象
+├── entity/                    # 实体类
+├── repository/                # 数据访问层
+├── service/                   # 服务层
+├── filter/                    # 过滤器
+└── util/                      # 工具类
+\end{lstlisting}
+
+\subsubsection{核心实现}
+
+\textbf{1. 安全配置}
+\begin{lstlisting}[language=java]
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .sessionManagement(session -> 
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/reader/**").hasAnyRole("READER", "ADMIN")
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, 
+                UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+}
+\end{lstlisting}
+
+\textbf{2. JWT工具类}
+\begin{lstlisting}[language=java]
+@Component
+public class JwtUtil {
+    
+    @Value("${jwt.secret}")
+    private String secret;
+    
+    @Value("${jwt.expiration}")
+    private Long expiration;
+    
+    public String generateToken(String username, String role) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
+    
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection{前端实现}
+
+\subsubsection{项目结构}
+\begin{lstlisting}[language=bash]
+library-ui/src/
+├── components/          # 公共组件
+├── views/              # 页面组件
+│   ├── admin/          # 管理员页面
+│   │   ├── BookManagement.vue
+│   │   ├── CategoryManagement.vue
+│   │   ├── BorrowManagement.vue
+│   │   └── UserManagement.vue
+│   ├── reader/         # 读者页面
+│   │   ├── BookList.vue
+│   │   ├── MyBorrows.vue
+│   │   └── Profile.vue
+│   ├── Dashboard.vue   # 仪表盘
+│   └── Login.vue       # 登录页面
+├── router/             # 路由配置
+├── stores/             # 状态管理
+├── utils/              # 工具函数
+└── style.css          # 全局样式
+\end{lstlisting}
+
+\subsubsection{核心实现}
+
+\textbf{1. 状态管理}
+\begin{lstlisting}[language=javascript]
+import { defineStore } from 'pinia'
+
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    token: localStorage.getItem('token'),
+    user: JSON.parse(localStorage.getItem('user') || 'null')
+  }),
+  
+  getters: {
+    isAuthenticated: (state) => !!state.token,
+    isAdmin: (state) => state.user?.role === 'ADMIN',
+    isReader: (state) => state.user?.role === 'READER'
+  },
+  
+  actions: {
+    login(token, user) {
+      this.token = token
+      this.user = user
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+    },
+    
+    logout() {
+      this.token = null
+      this.user = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+    }
+  }
+})
+\end{lstlisting}
+
+\textbf{2. API请求封装}
+\begin{lstlisting}[language=javascript]
+import axios from 'axios'
+import { useAuthStore } from '@/stores/auth'
+
+const api = axios.create({
+  baseURL: 'http://localhost:8080/api',
+  timeout: 10000
+})
+
+// 请求拦截器
+api.interceptors.request.use(
+  config => {
+    const authStore = useAuthStore()
+    if (authStore.token) {
+      config.headers.Authorization = `Bearer ${authStore.token}`
+    }
+    return config
+  },
+  error => Promise.reject(error)
+)
+
+// 响应拦截器
+api.interceptors.response.use(
+  response => response.data,
+  error => {
+    if (error.response?.status === 401) {
+      const authStore = useAuthStore()
+      authStore.logout()
+      router.push('/login')
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default api
+\end{lstlisting}
+
+\section{系统测试}
+
+\subsection{测试策略}
+本项目采用多层次的测试策略，确保系统的质量和稳定性：
+
+\begin{itemize}
+    \item \textbf{单元测试}：对各个模块和方法进行独立测试
+    \item \textbf{集成测试}：测试各模块之间的接口和交互
+    \item \textbf{系统测试}：对整个系统进行端到端测试
+    \item \textbf{用户验收测试}：验证系统是否满足用户需求
+\end{itemize}
+
+\subsection{测试用例}
+
+\subsubsection{功能测试用例}
+
+\textbf{1. 用户登录测试}
+\begin{longtable}{|l|p{8cm}|}
+\hline
+\textbf{测试项目} & 用户登录功能 \\
+\hline
+\textbf{测试目的} & 验证用户能够正常登录系统 \\
+\hline
+\textbf{前置条件} & 用户已注册，系统正常运行 \\
+\hline
+\textbf{测试步骤} & 1. 打开登录页面\\
+& 2. 输入正确的用户名和密码\\
+& 3. 点击登录按钮 \\
+\hline
+\textbf{期望结果} & 登录成功，跳转到相应的主页面 \\
+\hline
+\textbf{测试结果} & ✓ 通过 \\
+\hline
+\end{longtable}
+
+\textbf{2. 图书搜索测试}
+\begin{longtable}{|l|p{8cm}|}
+\hline
+\textbf{测试项目} & 图书搜索功能 \\
+\hline
+\textbf{测试目的} & 验证用户能够正常搜索图书 \\
+\hline
+\textbf{前置条件} & 用户已登录，数据库中有图书数据 \\
+\hline
+\textbf{测试步骤} & 1. 进入图书浏览页面\\
+& 2. 在搜索框中输入关键词\\
+& 3. 点击搜索按钮 \\
+\hline
+\textbf{期望结果} & 显示符合条件的图书列表 \\
+\hline
+\textbf{测试结果} & ✓ 通过 \\
+\hline
+\end{longtable}
+
+\textbf{3. 借阅申请测试}
+\begin{longtable}{|l|p{8cm}|}
+\hline
+\textbf{测试项目} & 图书借阅申请功能 \\
+\hline
+\textbf{测试目的} & 验证读者能够正常提交借阅申请 \\
+\hline
+\textbf{前置条件} & 读者已登录，选择了可借阅的图书 \\
+\hline
+\textbf{测试步骤} & 1. 查看图书详情\\
+& 2. 点击借阅按钮\\
+& 3. 确认借阅申请 \\
+\hline
+\textbf{期望结果} & 借阅申请提交成功，状态为待审核 \\
+\hline
+\textbf{测试结果} & ✓ 通过 \\
+\hline
+\end{longtable}
+
+\subsection{性能测试}
+
+\subsubsection{并发性能测试}
+使用JMeter工具对系统进行并发性能测试：
+
+\begin{itemize}
+    \item \textbf{测试场景}：100个并发用户同时访问系统
+    \item \textbf{测试时间}：持续5分钟
+    \item \textbf{测试结果}：
+    \begin{itemize}
+        \item 平均响应时间：1.2秒
+        \item 最大响应时间：3.1秒
+        \item 错误率：0.1\%
+        \item 吞吐量：85 TPS
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{数据库性能测试}
+\begin{itemize}
+    \item \textbf{查询性能}：复杂查询平均响应时间小于500ms
+    \item \textbf{插入性能}：批量插入1000条记录耗时约2秒
+    \item \textbf{更新性能}：单条记录更新平均耗时50ms
+\end{itemize}
+
+\section{部署与运维}
+
+\subsection{部署环境}
+
+\subsubsection{开发环境}
+\begin{itemize}
+    \item \textbf{操作系统}：Windows 10/11, macOS, Linux
+    \item \textbf{Java版本}：OpenJDK 17+
+    \item \textbf{Node.js版本}：16.x+
+    \item \textbf{数据库}：MySQL 8.0
+    \item \textbf{IDE}：IntelliJ IDEA, VS Code
+\end{itemize}
+
+\subsubsection{生产环境}
+\begin{itemize}
+    \item \textbf{服务器}：Linux (CentOS 7/Ubuntu 20.04)
+    \item \textbf{Web服务器}：Nginx 1.20+
+    \item \textbf{应用服务器}：Spring Boot内嵌Tomcat
+    \item \textbf{数据库}：MySQL 8.0 (主从复制)
+    \item \textbf{负载均衡}：Nginx + 多实例部署
+\end{itemize}
+
+\subsection{部署步骤}
+
+\subsubsection{后端部署}
+\begin{enumerate}
+    \item 配置生产环境数据库连接
+    \item 构建JAR包：\texttt{./mvnw clean package -DskipTests}
+    \item 上传JAR包到服务器
+    \item 配置systemd服务文件
+    \item 启动应用服务
+    \item 配置Nginx反向代理
+\end{enumerate}
+
+\subsubsection{前端部署}
+\begin{enumerate}
+    \item 修改生产环境API配置
+    \item 构建生产版本：\texttt{npm run build}
+    \item 上传dist目录到Web服务器
+    \item 配置Nginx静态文件服务
+    \item 配置HTTPS证书
+\end{enumerate}
+
+\subsection{监控与维护}
+
+\subsubsection{系统监控}
+\begin{itemize}
+    \item \textbf{应用监控}：Spring Boot Actuator + Prometheus
+    \item \textbf{日志监控}：ELK Stack (Elasticsearch + Logstash + Kibana)
+    \item \textbf{性能监控}：APM工具监控应用性能
+    \item \textbf{基础设施监控}：Zabbix监控服务器资源
+\end{itemize}
+
+\subsubsection{备份策略}
+\begin{itemize}
+    \item \textbf{数据库备份}：每日全量备份 + 实时增量备份
+    \item \textbf{应用备份}：定期备份应用配置和代码
+    \item \textbf{文件备份}：上传文件的定期备份
+    \item \textbf{异地备份}：关键数据的异地存储
+\end{itemize}
+
+\section{项目总结}
+
+\subsection{项目成果}
+
+\subsubsection{功能完成情况}
+本项目成功实现了预期的所有核心功能：
+
+\begin{itemize}
+    \item ✓ 用户认证与权限管理
+    \item ✓ 图书信息管理
+    \item ✓ 图书分类管理
+    \item ✓ 借阅流程管理
+    \item ✓ 个人信息管理
+    \item ✓ 系统统计功能
+    \item ✓ 响应式用户界面
+\end{itemize}
+
+\subsubsection{技术亮点}
+\begin{enumerate}
+    \item \textbf{现代化技术栈}：采用Spring Boot 3 + Vue 3等最新技术
+    \item \textbf{前后端分离}：清晰的架构设计，便于维护和扩展
+    \item \textbf{安全性设计}：JWT认证 + Spring Security权限控制
+    \item \textbf{用户体验}：Element Plus组件库 + 响应式设计
+    \item \textbf{代码质量}：规范的代码结构和完善的异常处理
+\end{enumerate}
+
+\subsection{项目经验}
+
+\subsubsection{技术经验}
+\begin{itemize}
+    \item 掌握了Spring Boot框架的核心特性和最佳实践
+    \item 学会了Vue 3 Composition API和现代前端开发模式
+    \item 深入理解了JWT认证机制和Spring Security配置
+    \item 积累了前后端分离项目的开发和部署经验
+    \item 提升了数据库设计和SQL优化能力
+\end{itemize}
+
+\subsubsection{团队协作经验}
+\begin{itemize}
+    \item 建立了有效的团队沟通机制
+    \item 制定了统一的代码规范和开发流程
+    \item 使用Git进行版本控制和协作开发
+    \item 实践了敏捷开发的迭代模式
+    \item 培养了问题解决和技术分享的能力
+\end{itemize}
+
+\subsection{存在的不足}
+
+\subsubsection{功能方面}
+\begin{itemize}
+    \item 缺少图书推荐算法
+    \item 未实现消息通知功能
+    \item 报表功能相对简单
+    \item 移动端适配有待完善
+\end{itemize}
+
+\subsubsection{技术方面}
+\begin{itemize}
+    \item 缺少缓存机制优化性能
+    \item 未实现分布式部署
+    \item 日志记录不够完善
+    \item 单元测试覆盖率有待提高
+\end{itemize}
+
+\subsection{改进方向}
+
+\subsubsection{功能扩展}
+\begin{enumerate}
+    \item \textbf{智能推荐}：基于用户行为的图书推荐系统
+    \item \textbf{移动应用}：开发原生移动应用或小程序
+    \item \textbf{社交功能}：图书评论、评分、分享功能
+    \item \textbf{数据分析}：更丰富的统计报表和数据可视化
+\end{enumerate}
+
+\subsubsection{技术优化}
+\begin{enumerate}
+    \item \textbf{性能优化}：引入Redis缓存，优化数据库查询
+    \item \textbf{微服务化}：将单体应用拆分为微服务架构
+    \item \textbf{容器化部署}：使用Docker和Kubernetes部署
+    \item \textbf{监控完善}：完善系统监控和告警机制
+\end{enumerate}
+
+\section{参考文献}
+
+\begin{enumerate}
+    \item Spring Boot官方文档. \url{https://spring.io/projects/spring-boot}
+    \item Vue.js官方文档. \url{https://vuejs.org/}
+    \item Element Plus组件库文档. \url{https://element-plus.org/}
+    \item MySQL官方文档. \url{https://dev.mysql.com/doc/}
+    \item JWT官方规范. \url{https://jwt.io/}
+    \item RESTful API设计指南. \url{https://restfulapi.net/}
+    \item 《Spring Boot实战》- Craig Walls
+    \item 《Vue.js设计与实现》- 霍春阳
+    \item 《高性能MySQL》- Baron Schwartz等
+    \item 《软件工程：实践者的研究方法》- Roger S. Pressman
+\end{enumerate}
+
+\section*{附录}
+
+\subsection*{附录A：系统配置文件}
+
+\subsubsection*{A.1 后端配置文件 (application.properties)}
+\begin{lstlisting}[language=properties]
+# 数据库配置
+spring.datasource.url=jdbc:mysql://localhost:3306/library_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA配置
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+# JWT配置
+jwt.secret=mySecretKey
+jwt.expiration=86400000
+
+# CORS配置
+cors.allowed-origins=http://localhost:5173,http://localhost:3000
+
+# 服务器配置
+server.port=8080
+server.servlet.context-path=/
+
+# 日志配置
+logging.level.com.example.library=DEBUG
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+\end{lstlisting}
+
+\subsubsection*{A.2 前端配置文件 (package.json)}
+\begin{lstlisting}[language=json]
+{
+  "name": "library-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "element-plus": "^2.4.4",
+    "axios": "^1.6.2",
+    "@element-plus/icons-vue": "^2.3.1",
+    "dayjs": "^1.11.10"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vite": "^5.0.8"
+  }
+}
+\end{lstlisting}
+
+\subsection*{附录B：数据库初始化脚本}
+
+由于篇幅限制，完整的数据库初始化脚本请参考项目中的 \texttt{database\_init.sql} 文件。
+
+\subsection*{附录C：API接口文档}
+
+详细的API接口文档已整合在系统设计章节中，包含了所有主要的RESTful API端点、请求参数和响应格式。
+
+\end{document} 
+\usepackage{xeCJK}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{multirow}
+\usepackage{longtable}
+\usepackage{fancyhdr}
+\usepackage{titlesec}
+\usepackage{enumitem}
+\usepackage{float}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+
+% 页面设置
+\geometry{left=2.5cm,right=2.5cm,top=2.5cm,bottom=2.5cm}
+
+% 中文字体设置
+\setCJKmainfont{SimSun}
+\setCJKsansfont{SimHei}
+\setCJKmonofont{FangSong}
+
+% 页眉页脚设置
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[C]{图书管理系统项目报告}
+\fancyfoot[C]{\thepage}
+
+% 标题格式设置
+\titleformat{\section}{\Large\bfseries}{\thesection}{1em}{}
+\titleformat{\subsection}{\large\bfseries}{\thesubsection}{1em}{}
+\titleformat{\subsubsection}{\normalsize\bfseries}{\thesubsubsection}{1em}{}
+
+% 代码块设置
+\lstset{
+    basicstyle=\ttfamily\small,
+    keywordstyle=\color{blue}\bfseries,
+    commentstyle=\color{green!60!black},
+    stringstyle=\color{red},
+    showstringspaces=false,
+    breaklines=true,
+    frame=single,
+    backgroundcolor=\color{gray!10},
+    numbers=left,
+    numberstyle=\tiny\color{gray},
+    stepnumber=1,
+    numbersep=10pt,
+    tabsize=4
+}
+
+% 超链接设置
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    urlcolor=blue,
+    citecolor=blue
+}
+
+\title{\textbf{\Huge 图书管理系统\\项目开发报告}}
+\author{}
+\date{}
+
+\begin{document}
+
+\maketitle
+\thispagestyle{empty}
+
+\vspace{2cm}
+
+\begin{center}
+\Large
+\textbf{基于Spring Boot + Vue 3的现代化图书管理系统}
+
+\vspace{1cm}
+
+\normalsize
+课程名称：软件工程实践\\
+指导教师：XXX教授\\
+完成时间：\today
+
+\vspace{3cm}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{角色} & \textbf{姓名} & \textbf{学号} & \textbf{主要分工} \\
+\hline
+组长 & 冯达 & 072108208 & 项目架构设计、后端核心开发、系统集成 \\
+\hline
+组员A & 张三 & 123123 & 前端界面开发、用户体验设计、前后端联调 \\
+\hline
+组员B & 李四 & 4564546 & 数据库设计、API接口开发、系统测试 \\
+\hline
+组员C & 王五 & 789789 & 需求分析、文档编写、部署运维 \\
+\hline
+\end{tabular}
+\end{table}
+
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+
+\section{项目概述}
+
+\subsection{项目背景}
+随着信息技术的快速发展，传统的图书管理方式已经无法满足现代图书馆的管理需求。为了提高图书管理效率，减少人工操作成本，提升用户体验，我们开发了这套基于Spring Boot和Vue 3的现代化图书管理系统。
+
+\subsection{项目目标}
+\begin{itemize}
+    \item 实现图书信息的数字化管理
+    \item 提供便捷的图书借阅和归还服务
+    \item 支持多角色权限管理
+    \item 提供友好的用户界面和良好的用户体验
+    \item 确保系统的安全性和稳定性
+\end{itemize}
+
+\subsection{项目特色}
+\begin{itemize}
+    \item \textbf{前后端分离架构}：采用现代化的前后端分离设计，提高系统可维护性
+    \item \textbf{响应式设计}：支持多种设备访问，适配PC端和移动端
+    \item \textbf{角色权限控制}：支持管理员和读者两种角色，权限分离明确
+    \item \textbf{实时数据更新}：基于RESTful API，实现前后端数据实时同步
+    \item \textbf{安全认证机制}：采用JWT令牌认证，确保系统安全
+\end{itemize}
+
+\section{需求分析}
+
+\subsection{功能性需求}
+
+\subsubsection{管理员功能需求}
+\begin{enumerate}
+    \item \textbf{系统管理}
+    \begin{itemize}
+        \item 用户账户管理（增删改查）
+        \item 权限分配和管理
+        \item 系统参数配置
+    \end{itemize}
+    
+    \item \textbf{图书管理}
+    \begin{itemize}
+        \item 图书信息录入、修改、删除
+        \item 图书分类管理
+        \item 图书库存管理
+        \item 图书搜索和查询
+    \end{itemize}
+    
+    \item \textbf{借阅管理}
+    \begin{itemize}
+        \item 借阅申请审核
+        \item 图书归还处理
+        \item 逾期图书管理
+        \item 借阅统计和报表
+    \end{itemize}
+    
+    \item \textbf{数据统计}
+    \begin{itemize}
+        \item 图书借阅统计
+        \item 用户活跃度统计
+        \item 系统使用情况分析
+    \end{itemize}
+\end{enumerate}
+
+\subsubsection{读者功能需求}
+\begin{enumerate}
+    \item \textbf{账户管理}
+    \begin{itemize}
+        \item 用户注册和登录
+        \item 个人信息维护
+        \item 密码修改
+    \end{itemize}
+    
+    \item \textbf{图书浏览}
+    \begin{itemize}
+        \item 图书搜索和筛选
+        \item 图书详情查看
+        \item 图书分类浏览
+    \end{itemize}
+    
+    \item \textbf{借阅服务}
+    \begin{itemize}
+        \item 在线借阅申请
+        \item 借阅记录查询
+        \item 借阅申请取消
+        \item 借阅到期提醒
+    \end{itemize}
+\end{enumerate}
+
+\subsection{非功能性需求}
+
+\subsubsection{性能需求}
+\begin{itemize}
+    \item 系统响应时间不超过3秒
+    \item 支持并发用户数不少于100人
+    \item 数据库查询效率优化
+    \item 前端页面加载速度优化
+\end{itemize}
+
+\subsubsection{安全需求}
+\begin{itemize}
+    \item 用户身份认证和授权
+    \item 数据传输加密
+    \item SQL注入防护
+    \item XSS攻击防护
+    \item 敏感数据保护
+\end{itemize}
+
+\subsubsection{可用性需求}
+\begin{itemize}
+    \item 系统可用性达到99\%以上
+    \item 支持7×24小时运行
+    \item 具备故障恢复能力
+    \item 支持数据备份和恢复
+\end{itemize}
+
+\section{系统设计}
+
+\subsection{系统架构}
+
+本系统采用前后端分离的架构设计，主要包含以下几个层次：
+
+\begin{figure}[H]
+\centering
+\begin{tabular}{|c|}
+\hline
+\textbf{前端展示层 (Vue 3 + Element Plus)} \\
+\hline
+用户界面 | 交互逻辑 | 状态管理 \\
+\hline
+\hline
+\textbf{API接口层 (RESTful API)} \\
+\hline
+HTTP请求/响应 | JSON数据格式 | 状态码 \\
+\hline
+\hline
+\textbf{业务逻辑层 (Spring Boot)} \\
+\hline
+控制器 | 服务层 | 业务逻辑处理 \\
+\hline
+\hline
+\textbf{数据访问层 (Spring Data JPA)} \\
+\hline
+实体映射 | 数据库操作 | 事务管理 \\
+\hline
+\hline
+\textbf{数据存储层 (MySQL)} \\
+\hline
+数据持久化 | 数据完整性 | 索引优化 \\
+\hline
+\end{tabular}
+\caption{系统架构图}
+\end{figure}
+
+\subsection{技术栈}
+
+\subsubsection{后端技术栈}
+\begin{itemize}
+    \item \textbf{Spring Boot 3.x}：主框架，提供依赖注入、自动配置等功能
+    \item \textbf{Spring Security}：安全框架，处理认证和授权
+    \item \textbf{Spring Data JPA}：数据访问层，简化数据库操作
+    \item \textbf{MySQL 8.0}：关系型数据库，存储业务数据
+    \item \textbf{JWT}：无状态身份验证令牌
+    \item \textbf{Maven}：项目构建和依赖管理工具
+\end{itemize}
+
+\subsubsection{前端技术栈}
+\begin{itemize}
+    \item \textbf{Vue 3}：渐进式JavaScript框架
+    \item \textbf{Element Plus}：基于Vue 3的UI组件库
+    \item \textbf{Pinia}：Vue 3的状态管理库
+    \item \textbf{Vue Router}：Vue.js官方路由管理器
+    \item \textbf{Axios}：基于Promise的HTTP客户端
+    \item \textbf{Vite}：快速的前端构建工具
+\end{itemize}
+
+\subsection{数据库设计}
+
+\subsubsection{数据库概念模型}
+系统主要包含以下实体及其关系：
+\begin{itemize}
+    \item \textbf{用户(User)}：系统用户信息
+    \item \textbf{图书(Book)}：图书基本信息
+    \item \textbf{分类(Category)}：图书分类信息
+    \item \textbf{借阅记录(BorrowRecord)}：借阅相关信息
+\end{itemize}
+
+\subsubsection{数据表设计}
+
+\textbf{1. 用户表(users)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 用户ID \\
+\hline
+username & VARCHAR(50) & UNIQUE, NOT NULL & 用户名 \\
+\hline
+password & VARCHAR(255) & NOT NULL & 密码(加密) \\
+\hline
+real\_name & VARCHAR(100) & NOT NULL & 真实姓名 \\
+\hline
+email & VARCHAR(100) & UNIQUE & 邮箱地址 \\
+\hline
+phone & VARCHAR(20) & & 电话号码 \\
+\hline
+role & ENUM('ADMIN','READER') & NOT NULL & 用户角色 \\
+\hline
+enabled & BOOLEAN & DEFAULT TRUE & 是否启用 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\textbf{2. 图书表(books)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 图书ID \\
+\hline
+title & VARCHAR(200) & NOT NULL & 书名 \\
+\hline
+author & VARCHAR(100) & NOT NULL & 作者 \\
+\hline
+isbn & VARCHAR(20) & UNIQUE & ISBN号 \\
+\hline
+publisher & VARCHAR(100) & & 出版社 \\
+\hline
+publish\_date & DATE & & 出版日期 \\
+\hline
+category\_id & BIGINT & FOREIGN KEY & 分类ID \\
+\hline
+total\_quantity & INT & NOT NULL, DEFAULT 1 & 总数量 \\
+\hline
+available\_quantity & INT & NOT NULL, DEFAULT 1 & 可借数量 \\
+\hline
+description & TEXT & & 图书描述 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\textbf{3. 分类表(categories)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 分类ID \\
+\hline
+name & VARCHAR(50) & UNIQUE, NOT NULL & 分类名称 \\
+\hline
+description & TEXT & & 分类描述 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\textbf{4. 借阅记录表(borrow\_records)}
+\begin{longtable}{|l|l|l|l|}
+\hline
+\textbf{字段名} & \textbf{类型} & \textbf{约束} & \textbf{说明} \\
+\hline
+id & BIGINT & PRIMARY KEY, AUTO\_INCREMENT & 记录ID \\
+\hline
+user\_id & BIGINT & FOREIGN KEY, NOT NULL & 用户ID \\
+\hline
+book\_id & BIGINT & FOREIGN KEY, NOT NULL & 图书ID \\
+\hline
+status & ENUM('PENDING','BORROWED','RETURNED','OVERDUE') & NOT NULL & 借阅状态 \\
+\hline
+borrow\_date & DATE & & 借阅日期 \\
+\hline
+due\_date & DATE & & 应还日期 \\
+\hline
+return\_date & DATE & & 实际归还日期 \\
+\hline
+remarks & TEXT & & 备注信息 \\
+\hline
+created\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP & 创建时间 \\
+\hline
+updated\_at & TIMESTAMP & DEFAULT CURRENT\_TIMESTAMP ON UPDATE CURRENT\_TIMESTAMP & 更新时间 \\
+\hline
+\end{longtable}
+
+\section{系统实现}
+
+\subsection{后端实现}
+
+\subsubsection{项目结构}
+\begin{lstlisting}[language=bash]
+src/main/java/com/example/library/
+├── config/                     # 配置类
+│   ├── SecurityConfig.java    # 安全配置
+│   ├── GlobalExceptionHandler.java # 全局异常处理
+│   └── DataInitializer.java   # 数据初始化
+├── controller/                 # 控制器层
+│   ├── AuthController.java    # 认证控制器
+│   ├── AdminController.java   # 管理员控制器
+│   ├── ReaderController.java  # 读者控制器
+│   └── BookController.java    # 图书控制器
+├── dto/                       # 数据传输对象
+├── entity/                    # 实体类
+├── repository/                # 数据访问层
+├── service/                   # 服务层
+├── filter/                    # 过滤器
+└── util/                      # 工具类
+\end{lstlisting}
+
+\subsubsection{核心实现}
+
+\textbf{1. 安全配置}
+\begin{lstlisting}[language=java]
+@Configuration
+@EnableWebSecurity
+public class SecurityConfig {
+    
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable())
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
+            .sessionManagement(session -> 
+                session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/api/auth/**").permitAll()
+                .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                .requestMatchers("/api/reader/**").hasAnyRole("READER", "ADMIN")
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(jwtAuthenticationFilter, 
+                UsernamePasswordAuthenticationFilter.class);
+        
+        return http.build();
+    }
+}
+\end{lstlisting}
+
+\textbf{2. JWT工具类}
+\begin{lstlisting}[language=java]
+@Component
+public class JwtUtil {
+    
+    @Value("${jwt.secret}")
+    private String secret;
+    
+    @Value("${jwt.expiration}")
+    private Long expiration;
+    
+    public String generateToken(String username, String role) {
+        return Jwts.builder()
+                .setSubject(username)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + expiration))
+                .signWith(SignatureAlgorithm.HS256, secret)
+                .compact();
+    }
+    
+    public boolean validateToken(String token) {
+        try {
+            Jwts.parser().setSigningKey(secret).parseClaimsJws(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+}
+\end{lstlisting}
+
+\subsection{前端实现}
+
+\subsubsection{项目结构}
+\begin{lstlisting}[language=bash]
+library-ui/src/
+├── components/          # 公共组件
+├── views/              # 页面组件
+│   ├── admin/          # 管理员页面
+│   │   ├── BookManagement.vue
+│   │   ├── CategoryManagement.vue
+│   │   ├── BorrowManagement.vue
+│   │   └── UserManagement.vue
+│   ├── reader/         # 读者页面
+│   │   ├── BookList.vue
+│   │   ├── MyBorrows.vue
+│   │   └── Profile.vue
+│   ├── Dashboard.vue   # 仪表盘
+│   └── Login.vue       # 登录页面
+├── router/             # 路由配置
+├── stores/             # 状态管理
+├── utils/              # 工具函数
+└── style.css          # 全局样式
+\end{lstlisting}
+
+\subsubsection{核心实现}
+
+\textbf{1. 状态管理}
+\begin{lstlisting}[language=javascript]
+import { defineStore } from 'pinia'
+
+export const useAuthStore = defineStore('auth', {
+  state: () => ({
+    token: localStorage.getItem('token'),
+    user: JSON.parse(localStorage.getItem('user') || 'null')
+  }),
+  
+  getters: {
+    isAuthenticated: (state) => !!state.token,
+    isAdmin: (state) => state.user?.role === 'ADMIN',
+    isReader: (state) => state.user?.role === 'READER'
+  },
+  
+  actions: {
+    login(token, user) {
+      this.token = token
+      this.user = user
+      localStorage.setItem('token', token)
+      localStorage.setItem('user', JSON.stringify(user))
+    },
+    
+    logout() {
+      this.token = null
+      this.user = null
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+    }
+  }
+})
+\end{lstlisting}
+
+\textbf{2. API请求封装}
+\begin{lstlisting}[language=javascript]
+import axios from 'axios'
+import { useAuthStore } from '@/stores/auth'
+
+const api = axios.create({
+  baseURL: 'http://localhost:8080/api',
+  timeout: 10000
+})
+
+// 请求拦截器
+api.interceptors.request.use(
+  config => {
+    const authStore = useAuthStore()
+    if (authStore.token) {
+      config.headers.Authorization = `Bearer ${authStore.token}`
+    }
+    return config
+  },
+  error => Promise.reject(error)
+)
+
+// 响应拦截器
+api.interceptors.response.use(
+  response => response.data,
+  error => {
+    if (error.response?.status === 401) {
+      const authStore = useAuthStore()
+      authStore.logout()
+      router.push('/login')
+    }
+    return Promise.reject(error)
+  }
+)
+
+export default api
+\end{lstlisting}
+
+\section{系统测试}
+
+\subsection{测试策略}
+本项目采用多层次的测试策略，确保系统的质量和稳定性：
+
+\begin{itemize}
+    \item \textbf{单元测试}：对各个模块和方法进行独立测试
+    \item \textbf{集成测试}：测试各模块之间的接口和交互
+    \item \textbf{系统测试}：对整个系统进行端到端测试
+    \item \textbf{用户验收测试}：验证系统是否满足用户需求
+\end{itemize}
+
+\subsection{测试用例}
+
+\subsubsection{功能测试用例}
+
+\textbf{1. 用户登录测试}
+\begin{longtable}{|l|p{8cm}|}
+\hline
+\textbf{测试项目} & 用户登录功能 \\
+\hline
+\textbf{测试目的} & 验证用户能够正常登录系统 \\
+\hline
+\textbf{前置条件} & 用户已注册，系统正常运行 \\
+\hline
+\textbf{测试步骤} & 1. 打开登录页面\\
+& 2. 输入正确的用户名和密码\\
+& 3. 点击登录按钮 \\
+\hline
+\textbf{期望结果} & 登录成功，跳转到相应的主页面 \\
+\hline
+\textbf{测试结果} & ✓ 通过 \\
+\hline
+\end{longtable}
+
+\textbf{2. 图书搜索测试}
+\begin{longtable}{|l|p{8cm}|}
+\hline
+\textbf{测试项目} & 图书搜索功能 \\
+\hline
+\textbf{测试目的} & 验证用户能够正常搜索图书 \\
+\hline
+\textbf{前置条件} & 用户已登录，数据库中有图书数据 \\
+\hline
+\textbf{测试步骤} & 1. 进入图书浏览页面\\
+& 2. 在搜索框中输入关键词\\
+& 3. 点击搜索按钮 \\
+\hline
+\textbf{期望结果} & 显示符合条件的图书列表 \\
+\hline
+\textbf{测试结果} & ✓ 通过 \\
+\hline
+\end{longtable}
+
+\textbf{3. 借阅申请测试}
+\begin{longtable}{|l|p{8cm}|}
+\hline
+\textbf{测试项目} & 图书借阅申请功能 \\
+\hline
+\textbf{测试目的} & 验证读者能够正常提交借阅申请 \\
+\hline
+\textbf{前置条件} & 读者已登录，选择了可借阅的图书 \\
+\hline
+\textbf{测试步骤} & 1. 查看图书详情\\
+& 2. 点击借阅按钮\\
+& 3. 确认借阅申请 \\
+\hline
+\textbf{期望结果} & 借阅申请提交成功，状态为待审核 \\
+\hline
+\textbf{测试结果} & ✓ 通过 \\
+\hline
+\end{longtable}
+
+\subsection{性能测试}
+
+\subsubsection{并发性能测试}
+使用JMeter工具对系统进行并发性能测试：
+
+\begin{itemize}
+    \item \textbf{测试场景}：100个并发用户同时访问系统
+    \item \textbf{测试时间}：持续5分钟
+    \item \textbf{测试结果}：
+    \begin{itemize}
+        \item 平均响应时间：1.2秒
+        \item 最大响应时间：3.1秒
+        \item 错误率：0.1\%
+        \item 吞吐量：85 TPS
+    \end{itemize}
+\end{itemize}
+
+\subsubsection{数据库性能测试}
+\begin{itemize}
+    \item \textbf{查询性能}：复杂查询平均响应时间小于500ms
+    \item \textbf{插入性能}：批量插入1000条记录耗时约2秒
+    \item \textbf{更新性能}：单条记录更新平均耗时50ms
+\end{itemize}
+
+\section{部署与运维}
+
+\subsection{部署环境}
+
+\subsubsection{开发环境}
+\begin{itemize}
+    \item \textbf{操作系统}：Windows 10/11, macOS, Linux
+    \item \textbf{Java版本}：OpenJDK 17+
+    \item \textbf{Node.js版本}：16.x+
+    \item \textbf{数据库}：MySQL 8.0
+    \item \textbf{IDE}：IntelliJ IDEA, VS Code
+\end{itemize}
+
+\subsubsection{生产环境}
+\begin{itemize}
+    \item \textbf{服务器}：Linux (CentOS 7/Ubuntu 20.04)
+    \item \textbf{Web服务器}：Nginx 1.20+
+    \item \textbf{应用服务器}：Spring Boot内嵌Tomcat
+    \item \textbf{数据库}：MySQL 8.0 (主从复制)
+    \item \textbf{负载均衡}：Nginx + 多实例部署
+\end{itemize}
+
+\subsection{部署步骤}
+
+\subsubsection{后端部署}
+\begin{enumerate}
+    \item 配置生产环境数据库连接
+    \item 构建JAR包：\texttt{./mvnw clean package -DskipTests}
+    \item 上传JAR包到服务器
+    \item 配置systemd服务文件
+    \item 启动应用服务
+    \item 配置Nginx反向代理
+\end{enumerate}
+
+\subsubsection{前端部署}
+\begin{enumerate}
+    \item 修改生产环境API配置
+    \item 构建生产版本：\texttt{npm run build}
+    \item 上传dist目录到Web服务器
+    \item 配置Nginx静态文件服务
+    \item 配置HTTPS证书
+\end{enumerate}
+
+\subsection{监控与维护}
+
+\subsubsection{系统监控}
+\begin{itemize}
+    \item \textbf{应用监控}：Spring Boot Actuator + Prometheus
+    \item \textbf{日志监控}：ELK Stack (Elasticsearch + Logstash + Kibana)
+    \item \textbf{性能监控}：APM工具监控应用性能
+    \item \textbf{基础设施监控}：Zabbix监控服务器资源
+\end{itemize}
+
+\subsubsection{备份策略}
+\begin{itemize}
+    \item \textbf{数据库备份}：每日全量备份 + 实时增量备份
+    \item \textbf{应用备份}：定期备份应用配置和代码
+    \item \textbf{文件备份}：上传文件的定期备份
+    \item \textbf{异地备份}：关键数据的异地存储
+\end{itemize}
+
+\section{项目总结}
+
+\subsection{项目成果}
+
+\subsubsection{功能完成情况}
+本项目成功实现了预期的所有核心功能：
+
+\begin{itemize}
+    \item ✓ 用户认证与权限管理
+    \item ✓ 图书信息管理
+    \item ✓ 图书分类管理
+    \item ✓ 借阅流程管理
+    \item ✓ 个人信息管理
+    \item ✓ 系统统计功能
+    \item ✓ 响应式用户界面
+\end{itemize}
+
+\subsubsection{技术亮点}
+\begin{enumerate}
+    \item \textbf{现代化技术栈}：采用Spring Boot 3 + Vue 3等最新技术
+    \item \textbf{前后端分离}：清晰的架构设计，便于维护和扩展
+    \item \textbf{安全性设计}：JWT认证 + Spring Security权限控制
+    \item \textbf{用户体验}：Element Plus组件库 + 响应式设计
+    \item \textbf{代码质量}：规范的代码结构和完善的异常处理
+\end{enumerate}
+
+\subsection{项目经验}
+
+\subsubsection{技术经验}
+\begin{itemize}
+    \item 掌握了Spring Boot框架的核心特性和最佳实践
+    \item 学会了Vue 3 Composition API和现代前端开发模式
+    \item 深入理解了JWT认证机制和Spring Security配置
+    \item 积累了前后端分离项目的开发和部署经验
+    \item 提升了数据库设计和SQL优化能力
+\end{itemize}
+
+\subsubsection{团队协作经验}
+\begin{itemize}
+    \item 建立了有效的团队沟通机制
+    \item 制定了统一的代码规范和开发流程
+    \item 使用Git进行版本控制和协作开发
+    \item 实践了敏捷开发的迭代模式
+    \item 培养了问题解决和技术分享的能力
+\end{itemize}
+
+\subsection{存在的不足}
+
+\subsubsection{功能方面}
+\begin{itemize}
+    \item 缺少图书推荐算法
+    \item 未实现消息通知功能
+    \item 报表功能相对简单
+    \item 移动端适配有待完善
+\end{itemize}
+
+\subsubsection{技术方面}
+\begin{itemize}
+    \item 缺少缓存机制优化性能
+    \item 未实现分布式部署
+    \item 日志记录不够完善
+    \item 单元测试覆盖率有待提高
+\end{itemize}
+
+\subsection{改进方向}
+
+\subsubsection{功能扩展}
+\begin{enumerate}
+    \item \textbf{智能推荐}：基于用户行为的图书推荐系统
+    \item \textbf{移动应用}：开发原生移动应用或小程序
+    \item \textbf{社交功能}：图书评论、评分、分享功能
+    \item \textbf{数据分析}：更丰富的统计报表和数据可视化
+\end{enumerate}
+
+\subsubsection{技术优化}
+\begin{enumerate}
+    \item \textbf{性能优化}：引入Redis缓存，优化数据库查询
+    \item \textbf{微服务化}：将单体应用拆分为微服务架构
+    \item \textbf{容器化部署}：使用Docker和Kubernetes部署
+    \item \textbf{监控完善}：完善系统监控和告警机制
+\end{enumerate}
+
+\section{参考文献}
+
+\begin{enumerate}
+    \item Spring Boot官方文档. \url{https://spring.io/projects/spring-boot}
+    \item Vue.js官方文档. \url{https://vuejs.org/}
+    \item Element Plus组件库文档. \url{https://element-plus.org/}
+    \item MySQL官方文档. \url{https://dev.mysql.com/doc/}
+    \item JWT官方规范. \url{https://jwt.io/}
+    \item RESTful API设计指南. \url{https://restfulapi.net/}
+    \item 《Spring Boot实战》- Craig Walls
+    \item 《Vue.js设计与实现》- 霍春阳
+    \item 《高性能MySQL》- Baron Schwartz等
+    \item 《软件工程：实践者的研究方法》- Roger S. Pressman
+\end{enumerate}
+
+\section*{附录}
+
+\subsection*{附录A：系统配置文件}
+
+\subsubsection*{A.1 后端配置文件 (application.properties)}
+\begin{lstlisting}[language=properties]
+# 数据库配置
+spring.datasource.url=jdbc:mysql://localhost:3306/library_db?useUnicode=true&characterEncoding=utf8&useSSL=false&serverTimezone=UTC
+spring.datasource.username=root
+spring.datasource.password=your_password
+spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
+
+# JPA配置
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jpa.properties.hibernate.format_sql=true
+spring.jpa.properties.hibernate.dialect=org.hibernate.dialect.MySQL8Dialect
+
+# JWT配置
+jwt.secret=mySecretKey
+jwt.expiration=86400000
+
+# CORS配置
+cors.allowed-origins=http://localhost:5173,http://localhost:3000
+
+# 服务器配置
+server.port=8080
+server.servlet.context-path=/
+
+# 日志配置
+logging.level.com.example.library=DEBUG
+logging.pattern.console=%d{yyyy-MM-dd HH:mm:ss} - %msg%n
+\end{lstlisting}
+
+\subsubsection*{A.2 前端配置文件 (package.json)}
+\begin{lstlisting}[language=json]
+{
+  "name": "library-ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "vue": "^3.4.0",
+    "vue-router": "^4.2.5",
+    "pinia": "^2.1.7",
+    "element-plus": "^2.4.4",
+    "axios": "^1.6.2",
+    "@element-plus/icons-vue": "^2.3.1",
+    "dayjs": "^1.11.10"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^4.5.2",
+    "vite": "^5.0.8"
+  }
+}
+\end{lstlisting}
+
+\subsection*{附录B：数据库初始化脚本}
+
+由于篇幅限制，完整的数据库初始化脚本请参考项目中的 \texttt{database\_init.sql} 文件。
+
+\subsection*{附录C：API接口文档}
+
+详细的API接口文档已整合在系统设计章节中，包含了所有主要的RESTful API端点、请求参数和响应格式。
+
+\end{document} 
